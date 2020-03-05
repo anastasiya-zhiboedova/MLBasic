@@ -31,9 +31,8 @@ class LossAndDerivatives:
 
         Comment: If Y is two-dimentional, average the error over both dimentions.
         """
-
-        # YOUR CODE HERE    
-        return 
+   
+        return np.mean(((X.dot(w) - Y)**2)**0.5)
 
     @staticmethod
     def l2_reg(w):
@@ -45,9 +44,7 @@ class LossAndDerivatives:
 
         Computes the L2 regularization term for the weight matrix w.
         """
-        
-        # YOUR CODE HERE
-        return 
+        return np.sum(w ** 2)
 
     @staticmethod
     def l1_reg(w):
@@ -59,9 +56,7 @@ class LossAndDerivatives:
         
         Computes the L1 regularization term for the weight matrix w.
         """
-
-        # YOUR CODE HERE
-        return 
+        return np.sum((w ** 2) ** 0.5)
 
     @staticmethod
     def no_reg(w):
@@ -86,8 +81,7 @@ class LossAndDerivatives:
         dimension as well, so you need to consider that fact in derivative implementation.
         """
 
-        # YOUR CODE HERE
-        return 
+        return 2 * np.dot(X.T, np.dot(X ,w) - Y) / Y.shape[0] / Y.shape[1]
 
     @staticmethod
     def mae_derivative(X, Y, w):
@@ -104,9 +98,12 @@ class LossAndDerivatives:
         Please mention, that in case `target_dimentionality` > 1 the error is averaged along this
         dimension as well, so you need to consider that fact in derivative implementation.
         """
-
-        # YOUR CODE HERE
-        return 
+        Y_prep = np.dot(X, w)
+        d = np.ones(Y.shape)
+        for i in range(Y.shape[0]):
+            for j in range(Y.shape[1]):
+                d[i,j] = -1 if (Y[i,j] - Y_prep[i,j]) >= 0 else 1
+        return  np.dot(X.T, d) / Y.shape[0] / Y.shape[1]
 
     @staticmethod
     def l2_reg_derivative(w):
@@ -117,9 +114,7 @@ class LossAndDerivatives:
 
         Computes the L2 regularization term derivative w.r.t. the weight matrix w.
         """
-
-        # YOUR CODE HERE
-        return 
+        return 2 * w
 
     @staticmethod
     def l1_reg_derivative(w):
@@ -130,9 +125,11 @@ class LossAndDerivatives:
 
         Computes the L1 regularization term derivative w.r.t. the weight matrix w.
         """
-
-        # YOUR CODE HERE
-        return 
+        d = np.ones(w.shape)
+        for i in range(w.shape[0]):
+            for j in range(w.shape[1]):
+                d[i,j] = 1 if w[i,j] >= 0 else -1
+        return d
 
     @staticmethod
     def no_reg_derivative(w):
