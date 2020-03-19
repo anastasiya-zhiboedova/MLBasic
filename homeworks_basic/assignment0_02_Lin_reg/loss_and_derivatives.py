@@ -81,7 +81,7 @@ class LossAndDerivatives:
         dimension as well, so you need to consider that fact in derivative implementation.
         """
 
-        return 2 * np.dot(X.T, np.dot(X ,w) - Y) / Y.shape[0] / Y.shape[1]
+        return 2 * np.dot(X.T, np.dot(X ,w) - Y) / np.prod(Y.shape)
 
     @staticmethod
     def mae_derivative(X, Y, w):
@@ -99,7 +99,7 @@ class LossAndDerivatives:
         dimension as well, so you need to consider that fact in derivative implementation.
         """
         d = np.sign(np.dot(X, w) - Y)
-        return  np.dot(X.T, d) / (X.shape[0] * X.shape[1])
+        return  np.dot(X.T, d) / np.prod(Y.shape)
 
     @staticmethod
     def l2_reg_derivative(w):
